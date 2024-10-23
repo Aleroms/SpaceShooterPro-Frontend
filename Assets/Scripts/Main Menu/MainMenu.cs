@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField]
+    private InputField[] signupInputFields, loginInputFields;
     private GameObject loginPanel, signupPanel, loginSignupPanel;
+
 
     private void Start()
     {
@@ -48,9 +52,6 @@ public class MainMenu : MonoBehaviour
         else if (panelName == signupPanel.name)
             signupPanel.SetActive(true);
 
-
-
-
     }
     public void NavigateFromPanel(string panelName)
     {
@@ -62,8 +63,22 @@ public class MainMenu : MonoBehaviour
         else if (panelName == signupPanel.name)
             signupPanel.SetActive(false);
 
-
-
+    }
+    public void SubmitForm(string whichForm)
+    {
+        if (whichForm == "login")
+        {
+            var password = loginInputFields[0].text;
+            var username = loginInputFields[1].text;
+            Debug.Log($"{username} {password}");
+        }
+        else
+        {
+            // signup
+            var password = signupInputFields[0].text;
+            var username = signupInputFields[1].text;
+            Debug.Log($"{username} {password}");
+        }
     }
 
 

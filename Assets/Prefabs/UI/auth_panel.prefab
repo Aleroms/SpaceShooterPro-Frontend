@@ -117,7 +117,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8290695850245705185}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: NavigateFromPanel
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: login_panel
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2608839681596332949
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +246,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2849216484176702806}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: SubmitForm
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: login
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2838291961194009049
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +334,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOGIN TO PLAY THE GAME
+  m_Text: SIGN UP TO PLAY
 --- !u!1 &3948604406711597531
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +734,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: username_inputfield
       objectReference: {fileID: 0}
+    - target: {fileID: 5785737142582636547, guid: 5614bbed15f3280458003a221c072bda,
+        type: 3}
+      propertyPath: m_Name
+      value: unameInputField
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5614bbed15f3280458003a221c072bda, type: 3}
 --- !u!224 &2925975845726700657 stripped
@@ -836,6 +863,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: password_inputfield
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785737142582636547, guid: 5614bbed15f3280458003a221c072bda,
+        type: 3}
+      propertyPath: m_Name
+      value: pwInputField
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5614bbed15f3280458003a221c072bda, type: 3}
