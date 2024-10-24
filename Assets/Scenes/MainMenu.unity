@@ -606,6 +606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 605576341}
+  - component: {fileID: 605576342}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -627,6 +628,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &605576342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605576340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90dbcac09ef866e409a9c0abb6da96f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &614348296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1927,12 +1940,17 @@ PrefabInstance:
     - target: {fileID: 5229847272890065388, guid: 529994259631ae740a316efbee2258ce,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SubmitForm
+      value: SubmitSignupForm
       objectReference: {fileID: 0}
     - target: {fileID: 5229847272890065388, guid: 529994259631ae740a316efbee2258ce,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: signup
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229847272890065388, guid: 529994259631ae740a316efbee2258ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6853740186540392430, guid: 529994259631ae740a316efbee2258ce,
         type: 3}
@@ -2208,6 +2226,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1448112823}
+    - target: {fileID: 5229847272890065388, guid: 529994259631ae740a316efbee2258ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SubmitLoginForm
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229847272890065388, guid: 529994259631ae740a316efbee2258ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6065714536299565268, guid: 529994259631ae740a316efbee2258ce,
         type: 3}
       propertyPath: m_Text
