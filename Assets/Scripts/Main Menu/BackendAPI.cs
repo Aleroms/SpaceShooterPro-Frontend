@@ -12,6 +12,8 @@ public class BackendAPI : MonoBehaviour
     public static readonly string url = "http://127.0.0.1:5000/";
     public static BackendAPI Instance {  get; private set; }
 
+    private GameObject _canvas;
+
 
     private void Awake()
     {
@@ -25,6 +27,11 @@ public class BackendAPI : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Start()
+    {
+        _canvas = GameObject.Find("Canvas");
     }
 
 
@@ -91,7 +98,8 @@ public class BackendAPI : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 var errorMsg = GetErrorStatus(www);
-                Debug.LogError("Error: " + errorMsg);
+                if(_canvas != null)
+                    _canvas.GetComponent<MainMenu>().DisplayNetworkError(errorMsg);
             }
             else
             {
@@ -99,7 +107,8 @@ public class BackendAPI : MonoBehaviour
                 PlayerPrefs.SetString("sessionToken", sessionToken);
 
                 // start game after player successfully logged in or signup
-                GameObject.Find("Canvas").GetComponent<MainMenu>().LoadLevel();
+                if(_canvas != null)
+                    _canvas.GetComponent<MainMenu>().LoadLevel();
             }
         }
     }

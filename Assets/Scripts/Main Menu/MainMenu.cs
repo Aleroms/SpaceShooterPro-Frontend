@@ -8,7 +8,9 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField]
     private InputField[] signupInputFields, loginInputFields;
-    private GameObject _loginPanel, _signupPanel, _loginSignupPanel;
+    private GameObject _loginPanel, _signupPanel, _loginSignupPanel,
+        _networkError;
+    private Text _networkErrorMessage;
     private BackendAPI _api;
 
 
@@ -18,12 +20,19 @@ public class MainMenu : MonoBehaviour
         _signupPanel = GameObject.Find("signup_panel");
         _loginSignupPanel = GameObject.Find("login_signup_panel");
         _api = GameObject.Find("NetworkManager").GetComponent<BackendAPI>();
+        _networkError = GameObject.FindGameObjectWithTag("NetworkError");
+        _networkErrorMessage = GameObject.Find("errorMessage").GetComponent<Text>();
 
         if (_loginPanel != null && _signupPanel != null && _loginSignupPanel != null)
         {
             _loginPanel.SetActive(false);
             _signupPanel.SetActive(false);
 
+        }
+
+        if(_networkError != null)
+        {
+            _networkError.SetActive(false);
         }
     }
     public void LoadLevel()
@@ -103,6 +112,20 @@ public class MainMenu : MonoBehaviour
         }
 
     }
-
+    public void DisplayNetworkError(string message)
+    {
+        StartCoroutine(NetworkErrorCoroutine(message));
+    }
+    private IEnumerator NetworkErrorCoroutine(string message)
+    {
+        if(_networkError != null && _networkErrorMessage != null)
+        {
+            _networkError.SetActive(true);
+            _networkErrorMessage.text = message;
+            yield return new WaitForSeconds(5f);
+            _networkError.SetActive(false);
+        }else
+            Debug.LogError(message);
+    }
 
 }
