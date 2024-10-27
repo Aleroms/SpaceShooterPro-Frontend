@@ -73,9 +73,13 @@ public class MainMenu : MonoBehaviour
         var password = loginInputFields[0].text;
         var username = loginInputFields[1].text;
 
+        // Encrypt password before sending to API
+        var encrypt = new Encryption();
+        var encryptedPassword = encrypt.Encrypt(password);
+
         if (_api != null)
         {
-            _api.Login(username, password);
+            _api.Login(username, encryptedPassword);
         }
         else
             Debug.LogError("api obj is null");
@@ -89,9 +93,13 @@ public class MainMenu : MonoBehaviour
         var password = signupInputFields[0].text;
         var username = signupInputFields[1].text;
 
+        // Encrypt password before sending to API
+        var encrypt = new Encryption();
+        var encryptedPassword = encrypt.Encrypt(password);
+
         if (_api != null)
         {
-            _api.Signup(username,password);
+            _api.Signup(username, encryptedPassword);
         }
 
     }

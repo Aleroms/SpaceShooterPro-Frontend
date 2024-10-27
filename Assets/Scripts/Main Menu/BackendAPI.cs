@@ -10,10 +10,30 @@ using UnityEngine.Networking;
 public class BackendAPI : MonoBehaviour
 {
     public static readonly string url = "http://127.0.0.1:5000/";
+    public static BackendAPI Instance {  get; private set; }
+
+
+    private void Awake()
+    {
+        // If there is an instance, and it's not me, delete myself.
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+
 
     public void Login(string username, string password)
     {
         PlayerPrefs.SetString("username", username);
+        PlayerPrefs.SetString("password", password);
+
         WWWForm loginForm = CreateUserAuthForm(username, password);
         StartCoroutine(AuthPostCoroutine(loginForm, "login"));
 
@@ -22,6 +42,8 @@ public class BackendAPI : MonoBehaviour
     public void Signup(string username, string password)
     {
         PlayerPrefs.SetString("username", username);
+        PlayerPrefs.SetString("password", password);
+
         WWWForm signupForm = CreateUserAuthForm(username, password);
         StartCoroutine(AuthPostCoroutine(signupForm, "register"));
     }
