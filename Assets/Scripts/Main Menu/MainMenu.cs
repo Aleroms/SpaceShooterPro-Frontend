@@ -112,6 +112,19 @@ public class MainMenu : MonoBehaviour
         }
 
     }
+    public void DeletePlayer()
+    {
+        var sessionToken = PlayerPrefs.GetString("sessionToken");
+        if (sessionToken != null && _api != null)
+        {
+            Debug.Log($"session token is {sessionToken}");
+            _api.Delete(sessionToken);
+        }
+        else
+            Debug.LogError("sessionToken or backendAPI is null");
+        // return to main menu
+        LoadMainMenu();
+    }
     public void DisplayNetworkError(string message)
     {
         StartCoroutine(NetworkErrorCoroutine(message));

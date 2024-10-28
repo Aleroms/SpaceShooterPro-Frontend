@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 public class BackendAPI : MonoBehaviour
 {
     public static readonly string url = "http://127.0.0.1:5000/";
-    public static BackendAPI Instance {  get; private set; }
+    public static BackendAPI Instance { get; private set; }
 
     private GameObject _canvas;
 
@@ -55,9 +55,9 @@ public class BackendAPI : MonoBehaviour
         StartCoroutine(AuthPostCoroutine(signupForm, "register"));
     }
 
-    public void Delete()
+    public void Delete(string sessionToken)
     {
-        throw new NotImplementedException();
+        StartCoroutine(DeleteUserCoroutine(sessionToken));
     }
     public void UpdateScore()
     {
@@ -88,6 +88,37 @@ public class BackendAPI : MonoBehaviour
         return sessionToken;
     }
 
+    private bool CheckIfNetworkError(UnityWebRequest www)
+    {
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            var errorMsg = GetErrorStatus(www);
+            if (_canvas != null)
+                _canvas.GetComponent<MainMenu>().DisplayNetworkError(errorMsg);
+
+            return false;
+        }
+        return true;
+    }
+
+    private IEnumerator DeleteUserCoroutine(string sessionToken)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Delete(url + "delete_user"))
+        {
+            www.SetRequestHeader("Authorization", sessionToken);
+            yield return www.SendWebRequest();
+
+            if(!CheckIfNetworkError(www))
+            {
+                //return user back to main menu
+                PlayerPrefs.SetString("username", "");
+                PlayerPrefs.SetString("password", "");
+                PlayerPrefs.SetString("sessionToken", "");
+                Debug.Log("successfully deleted user");
+            }
+        }
+    }
     private IEnumerator AuthPostCoroutine(WWWForm form, string endpoint)
     {
 
@@ -98,16 +129,17 @@ public class BackendAPI : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 var errorMsg = GetErrorStatus(www);
-                if(_canvas != null)
+                if (_canvas != null)
                     _canvas.GetComponent<MainMenu>().DisplayNetworkError(errorMsg);
             }
             else
             {
                 var sessionToken = GetSessionTokenFromDownloadHandler(www.downloadHandler.text);
                 PlayerPrefs.SetString("sessionToken", sessionToken);
+                Debug.Log($"session token is {sessionToken}");
 
                 // start game after player successfully logged in or signup
-                if(_canvas != null)
+                if (_canvas != null)
                     _canvas.GetComponent<MainMenu>().LoadLevel();
             }
         }

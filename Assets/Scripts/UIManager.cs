@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
 		_scoretext.text = "Score: " + 0;
+		// modify code to turn off highscore leaderboard
 		_gameover_text.gameObject.SetActive(false);
 		_gameover_instructions_text.gameObject.SetActive(false);
 		_gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -41,6 +42,11 @@ public class UIManager : MonoBehaviour
 	}
 	public void OnPlayerDeath()
 	{
+		/*
+		 * update player highscore
+		 * if > previous -> display 'NEW HIGH SCORE'
+		 * display top 10 high scores
+		 */
 		_gameover_instructions_text.gameObject.SetActive(true);
 		_gm.GameOver();
 		StartCoroutine(GameOverFlicker());
