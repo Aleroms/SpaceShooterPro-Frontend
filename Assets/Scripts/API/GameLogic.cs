@@ -1,39 +1,44 @@
-﻿namespace SpaceShooterPro.API
+﻿using System.Collections.Generic;
+
+namespace SpaceShooterPro.API
 {
     [System.Serializable]
-    public class HighScoreUpdateRequest
+    public class HighScoreResponse
     {
-        public string score;
+        public string username;
+        public int highscore;
+    }
+
+    // Wrapper for single-user response
+    [System.Serializable]
+    public class HighScoreResponseWrapper
+    {
+        public HighScoreResponse response;
+    }
+
+    // Wrapper for error response
+    [System.Serializable]
+    public class HighScoreErrorWrapper
+    {
+        public HighScoreError error;
     }
 
     [System.Serializable]
-    public class HighScoreUpdateResponse
+    public class HighScoreError
     {
-        public string success;
-    }
-
-    [System.Serializable]
-    public class HighScoreUpdateResponseWrapper
-    {
-        public HighScoreUpdateResponse response;
-    }
-
-    [System.Serializable]
-    public class HighScoreErrorResponse
-    {
-        public string error;
-    }
-
-    [System.Serializable]
-    public class HighScoreDetailedErrorResponse
-    {
-        public string error;
         public string message;
     }
 
+    // Wrapper for the list of highscores response
     [System.Serializable]
-    public class HighScoreErrorResponseWrapper
+    public class HighScoreListResponseWrapper
     {
-        public HighScoreErrorResponse response;
+        public HighScoreListResponse response;
+    }
+
+    [System.Serializable]
+    public class HighScoreListResponse
+    {
+        public List<HighScoreResponse> highscores;
     }
 }

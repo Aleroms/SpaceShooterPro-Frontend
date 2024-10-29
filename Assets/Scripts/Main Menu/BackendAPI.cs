@@ -59,9 +59,14 @@ public class BackendAPI : MonoBehaviour
     {
         StartCoroutine(DeleteUserCoroutine(sessionToken));
     }
-    public void UpdateScore()
+    public void UpdatePlayerHighScore()
     {
         throw new NotImplementedException();
+    }
+    public void GetPlayerHighScore(string username, Action<int> onHighScoreReceived)
+    {
+        Debug.Log("before coroutine");
+        StartCoroutine(GetPlayerHighScoreCoroutine(username, onHighScoreReceived));
     }
     private WWWForm CreateUserAuthForm(string username, string password)
     {
@@ -93,6 +98,8 @@ public class BackendAPI : MonoBehaviour
 
         if (www.isNetworkError || www.isHttpError)
         {
+            Debug.LogError(www.downloadHandler.text);
+
             var errorMsg = GetErrorStatus(www);
             if (_canvas != null)
                 _canvas.GetComponent<MainMenu>().DisplayNetworkError(errorMsg);
@@ -101,7 +108,31 @@ public class BackendAPI : MonoBehaviour
         }
         return true;
     }
+    private IEnumerator GetPlayerHighScoreCoroutine(string username, Action<int> callback)
+    {
+        var queryParameters = $"username={username}";
+        var endpoint = $"{url}highscore?{queryParameters}";
 
+        using (UnityWebRequest www = UnityWebRequest.Get(endpoint))
+        {
+            yield return www.SendWebRequest();
+
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(
+                    JsonUtility.FromJson<HighScoreErrorWrapper>(www.downloadHandler.text)
+                    .error.message);
+
+            }
+            else
+            {
+                // call the callback and pass in the value received after parsing the json
+                var highscoreResponse = JsonUtility.FromJson<HighScoreResponseWrapper>(www.downloadHandler.text);
+                callback(highscoreResponse.response.highscore);
+            }
+        }
+    }
     private IEnumerator DeleteUserCoroutine(string sessionToken)
     {
         using (UnityWebRequest www = UnityWebRequest.Delete(url + "delete_user"))
@@ -109,7 +140,7 @@ public class BackendAPI : MonoBehaviour
             www.SetRequestHeader("Authorization", sessionToken);
             yield return www.SendWebRequest();
 
-            if(!CheckIfNetworkError(www))
+            if (!CheckIfNetworkError(www))
             {
                 //return user back to main menu
                 PlayerPrefs.SetString("username", "");
