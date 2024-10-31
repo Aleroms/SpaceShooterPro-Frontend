@@ -16,19 +16,6 @@ namespace SpaceShooterPro.API
         public HighScoreResponse response;
     }
 
-    // Wrapper for error response
-    [System.Serializable]
-    public class HighScoreErrorWrapper
-    {
-        public HighScoreError error;
-    }
-
-    [System.Serializable]
-    public class HighScoreError
-    {
-        public string message;
-    }
-
     // Wrapper for the list of highscores response
     [System.Serializable]
     public class HighScoreListResponseWrapper
@@ -41,4 +28,6 @@ namespace SpaceShooterPro.API
     {
         public List<HighScoreResponse> highscores;
     }
+
+    // will use the same error message as authentication
 }

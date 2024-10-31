@@ -59,13 +59,12 @@ public class BackendAPI : MonoBehaviour
     {
         StartCoroutine(DeleteUserCoroutine(sessionToken));
     }
-    public void UpdatePlayerHighScore()
+    public void UpdatePlayerHighScore(int newScore, string sessionToken)
     {
-        throw new NotImplementedException();
+        StartCoroutine(UpdatePlayerHighScoreCoroutine(newScore, sessionToken));
     }
     public void GetPlayerHighScore(string username, Action<int> onHighScoreReceived)
     {
-        Debug.Log("before coroutine");
         StartCoroutine(GetPlayerHighScoreCoroutine(username, onHighScoreReceived));
     }
     private WWWForm CreateUserAuthForm(string username, string password)
@@ -108,6 +107,21 @@ public class BackendAPI : MonoBehaviour
         }
         return true;
     }
+    private IEnumerator UpdatePlayerHighScoreCoroutine(int newScore, string sessionToken)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("score", newScore);
+        using(UnityWebRequest www = UnityWebRequest.Post(url + "/update_highscore",form))
+        {
+            www.SetRequestHeader("Authorization", sessionToken);
+            yield return www.SendWebRequest();
+
+            if (!CheckIfNetworkError(www))
+            {
+                Debug.Log("update player high score");
+            }
+        }
+    }
     private IEnumerator GetPlayerHighScoreCoroutine(string username, Action<int> callback)
     {
         var queryParameters = $"username={username}";
@@ -121,7 +135,7 @@ public class BackendAPI : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.LogError(
-                    JsonUtility.FromJson<HighScoreErrorWrapper>(www.downloadHandler.text)
+                    JsonUtility.FromJson<ErrorResponseWrapper>(www.downloadHandler.text)
                     .error.message);
 
             }

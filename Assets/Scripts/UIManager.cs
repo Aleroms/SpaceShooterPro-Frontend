@@ -20,6 +20,9 @@ public class UIManager : MonoBehaviour
     private GameManager _gm;
     private BackendAPI _backendAPI;
 
+    private int _highscore = 0;
+    private int _currentscore = 0;
+
 
     private void Awake()
     {
@@ -29,9 +32,10 @@ public class UIManager : MonoBehaviour
 
         if (playerUsername != null && _backendAPI != null)
         {
-            _backendAPI.GetPlayerHighScore("unity1", (int highscore) =>
+            _backendAPI.GetPlayerHighScore(playerUsername, (int highscore) =>
             {
                 _highscoretext.text = highscore != 0 ? "Highscore: " + highscore : "";
+                _highscore = highscore;
             });
         }
         else
@@ -57,6 +61,7 @@ public class UIManager : MonoBehaviour
     public void SetScore(int score)
     {
         _scoretext.text = "Score: " + score;
+        _currentscore = score;
     }
     public void OnPlayerDeath()
     {
@@ -65,11 +70,20 @@ public class UIManager : MonoBehaviour
 		 * if > previous -> display 'NEW HIGH SCORE'
 		 * display top 10 high scores
 		 */
+        if(_currentscore > _highscore)
+        {
+            // update highscore
+            // turn on NEW HIGH SCORE banner.
+            _gameover_text.text = "NEW HIGH SCORE";
+            _backendAPI.UpdatePlayerHighScore(_currentscore,
+                PlayerPrefs.GetString("sessionToken"));
+        }
+
         _gameover_instructions_text.gameObject.SetActive(true);
         _gm.GameOver();
         StartCoroutine(GameOverFlicker());
     }
-    IEnumerator GameOverFlicker()
+    private IEnumerator GameOverFlicker()
     {
         while (true)
         {
