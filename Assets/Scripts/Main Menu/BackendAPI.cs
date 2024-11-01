@@ -67,6 +67,10 @@ public class BackendAPI : MonoBehaviour
     {
         StartCoroutine(GetPlayerHighScoreCoroutine(username, onHighScoreReceived));
     }
+    public void GetPlayersHighScore(int limit, Action<List<HighScoreResponse>> onHighScoresReceived)
+    {
+        StartCoroutine(GetPlayersHighScoreCoroutine(limit, onHighScoresReceived));
+    }
     private WWWForm CreateUserAuthForm(string username, string password)
     {
         var form = new WWWForm();
@@ -111,7 +115,7 @@ public class BackendAPI : MonoBehaviour
     {
         WWWForm form = new WWWForm();
         form.AddField("score", newScore);
-        using(UnityWebRequest www = UnityWebRequest.Post(url + "/update_highscore",form))
+        using(UnityWebRequest www = UnityWebRequest.Post(url + "update_highscore",form))
         {
             www.SetRequestHeader("Authorization", sessionToken);
             yield return www.SendWebRequest();
@@ -119,6 +123,25 @@ public class BackendAPI : MonoBehaviour
             if (!CheckIfNetworkError(www))
             {
                 Debug.Log("update player high score");
+            }
+        }
+    }
+    private IEnumerator GetPlayersHighScoreCoroutine(int limit, Action<List<HighScoreResponse>> callback)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(url + "highscore?limit=" + limit))
+        {
+            yield return www.SendWebRequest();
+
+            if(www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(
+                    JsonUtility.FromJson<ErrorResponseWrapper>(www.downloadHandler.text)
+                    .error.message);
+            }
+            else
+            {
+                var highscoreListResponse = JsonUtility.FromJson<HighScoreListResponseWrapper>(www.downloadHandler.text);
+                callback(highscoreListResponse.response.highscores);
             }
         }
     }
