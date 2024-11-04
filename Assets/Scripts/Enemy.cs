@@ -23,7 +23,8 @@ public class Enemy : MonoBehaviour
 	private float _fireRate = 0.5f;
 	[SerializeField]
 	private GameObject _laserPrefab;
-	//private Laser _laser;
+	
+	public bool _isDead = false;
    
 	void Start()
 	{
@@ -60,6 +61,8 @@ public class Enemy : MonoBehaviour
 	}
     void Update()
     {
+		if (_isDead) return;
+
 		CalculateMovement();
         
 		if( Time.time > _canFire)
@@ -83,9 +86,13 @@ public class Enemy : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		
+
 		//it's better to use other.tag than other.gameObject.tag
 		if(other.tag == "Player")
 		{
+            _isDead = true;
+            Debug.Log("Collided with " + other.name);
 			Player player = other.transform.GetComponent<Player>();
 
 			if(player != null)
@@ -99,7 +106,9 @@ public class Enemy : MonoBehaviour
 		}
 		else if(other.tag == "Laser")
 		{
-			Destroy(other.gameObject);
+            _isDead = true;
+            Debug.Log("Collided with " + other.name);
+            Destroy(other.gameObject);
 			_player.ScoreAdd(_reward);
 			_enemyDeath.SetTrigger("OnEnemyDeath");
 			_speed = 0;

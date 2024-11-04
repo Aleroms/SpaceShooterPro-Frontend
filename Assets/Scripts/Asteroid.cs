@@ -9,15 +9,18 @@ public class Asteroid : MonoBehaviour
 	[SerializeField]
 	private GameObject _explosion;
 	private SpawnManager _spawnManager;
-    // Start is called before the first frame update
+	private GameObject _instructionPanel;
     void Start()
     {
 		_spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+		_instructionPanel = GameObject.Find("Instructions_panel");
 
 		if(_spawnManager == null)
-		{
 			Debug.LogError("Spawn Manager is Null");
-		}
+
+		if(_instructionPanel == null)
+			Debug.Log("Instructions_panel is Null");
+
     }
 
     // Update is called once per frame
@@ -29,6 +32,7 @@ public class Asteroid : MonoBehaviour
 	{
 		if(other.tag == "Laser")
 		{
+			_instructionPanel.SetActive(false);
 			Instantiate(_explosion, transform.position, Quaternion.identity);
 			Destroy(other.gameObject);
 			_spawnManager.StartSpawning();
