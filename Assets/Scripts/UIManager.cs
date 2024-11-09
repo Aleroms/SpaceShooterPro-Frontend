@@ -1,5 +1,6 @@
 ﻿using SpaceShooterPro.API;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -105,9 +106,11 @@ public class UIManager : MonoBehaviour
         _highscorePanel.SetActive(true);
         _backendAPI.GetPlayersHighScore(10, (List<HighScoreResponse> list) =>
         {
+            // order by highest score
+            var sortedList = list.OrderByDescending(hsr => hsr.highscore).ToList();
 
             int idx = 1;
-            foreach (var item in list)
+            foreach (var item in sortedList)
             {
                 // instantiate new prefab
                 GameObject playerEntry = Instantiate(_playerEntryPrefab);

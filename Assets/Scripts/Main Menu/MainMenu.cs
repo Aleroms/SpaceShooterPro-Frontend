@@ -78,7 +78,6 @@ public class MainMenu : MonoBehaviour
 
     public void SubmitLoginForm()
     {
-        Debug.Log("submitting login form");
         var password = loginInputFields[0].text;
         var username = loginInputFields[1].text;
 

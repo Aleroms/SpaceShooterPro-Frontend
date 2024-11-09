@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 public class BackendAPI : MonoBehaviour
 {
-    public static readonly string url = "http://127.0.0.1:5000/";
+    public static readonly string url = "http://3.101.103.123/";
     public static BackendAPI Instance { get; private set; }
 
     private GameObject _canvas;
@@ -196,6 +196,7 @@ public class BackendAPI : MonoBehaviour
 
             if (www.isNetworkError || www.isHttpError)
             {
+                Debug.LogError(www.downloadHandler.text);
                 var errorMsg = GetErrorStatus(www);
                 if (_canvas != null)
                     _canvas.GetComponent<MainMenu>().DisplayNetworkError(errorMsg);
